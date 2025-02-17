@@ -1,0 +1,25 @@
+# Ignore build directories
+build/
+.cache/
+.ropeproject/
+
+# Ignore CMake user presets
+CMakeUserPresets.json
+
+# Ignore other common files
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+*.orig
+*.rej
+*.sublime-workspace
+*.sublime-project
+*.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Ignore Data
+requirements.txt
