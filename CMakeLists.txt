@@ -24,8 +24,14 @@ find_package(glad CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 
+# Automatically add all source files
+file(GLOB_RECURSE SOURCES "src/*.cc")
+
+# Add backend source files
+file(GLOB BACKEND_SOURCES "src/backends/*.cpp")
+
 # Add your source files
-add_executable(imageasy src/main.cc)
+add_executable(imageasy ${SOURCES} ${BACKEND_SOURCES})
 
 # Link libraries
 target_link_libraries(imageasy PRIVATE FFTW3::fftw3 glad::glad glm::glm imgui::imgui glfw)
