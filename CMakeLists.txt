@@ -37,9 +37,11 @@ file(GLOB BACKEND_SOURCES "src/backends/*.cpp")
 # Add tinyfiledialogs source file
 set(TINYFILEDIALOGS_SOURCE "third_party/tinyfiledialogs/tinyfiledialogs.c")
 
+# Add stb_image implementation
+set(STB_IMAGE_IMPLEMENTATION "include/stb.c")
 
 # Add source files
-add_executable(imageasy ${SOURCES} ${BACKEND_SOURCES} ${TINYFILEDIALOGS_SOURCE})
+add_executable(imageasy ${SOURCES} ${BACKEND_SOURCES} ${TINYFILEDIALOGS_SOURCE} ${STB_IMAGE_IMPLEMENTATION})
 
 # Link libraries
 target_link_libraries(imageasy PRIVATE FFTW3::fftw3 glad::glad glm::glm imgui::imgui glfw )

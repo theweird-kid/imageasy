@@ -11,7 +11,6 @@
 #include "../backends/imgui_impl_opengl3.h"
 
 #include "../gui/gui.hpp"
-#include "../gui/image_loader_widget.hpp"
 
 class Application {
 public:

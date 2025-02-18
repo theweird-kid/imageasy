@@ -8,6 +8,8 @@
 #include <vector>
 #include <memory>
 #include "widget.hpp"
+#include "canvas_widget.hpp"
+#include "tool_canvas.hpp"
 
 class Gui {
 public:
@@ -15,13 +17,13 @@ public:
     ~Gui();
     void newFrame();
     void render();
-    void addWidget(std::shared_ptr<Widget> widget);
 
 private:
-    void setupImGui();
+    void setupImGui(GLFWwindow* window);
     void cleanImGui();
 
-    std::vector<std::shared_ptr<Widget>> widgets;
+    std::shared_ptr<CanvasWidget> canvasWidget;
+    std::unique_ptr<ToolCanvas> toolCanvas;
 };
 
 #endif // GUI_HPP

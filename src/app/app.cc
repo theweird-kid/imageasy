@@ -35,8 +35,6 @@ Application::Application() noexcept {
 
     // Setup GUI
     m_Gui = std::make_unique<Gui>(m_Window);
-    auto imgLoader = std::make_shared<ImageLoaderWidget>();
-    m_Gui->addWidget(imgLoader);
 }
 
 Application::~Application() {
@@ -55,7 +53,7 @@ void Application::run()
         m_Gui->newFrame();
 
         // Render here
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(21.0f / 255.0f, 39.0f / 255.0f, 60.0f / 255.0f, 1.0f); // Set background color to #15273c
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Render GUI
