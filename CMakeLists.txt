@@ -17,6 +17,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #Handle dependencies
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
+# Include directories
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/third_party/tinyfiledialogs)
+
 # Include Conan dependencies
 find_package(FFTW3 CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
@@ -30,8 +34,12 @@ file(GLOB_RECURSE SOURCES "src/*.cc")
 # Add backend source files
 file(GLOB BACKEND_SOURCES "src/backends/*.cpp")
 
-# Add your source files
-add_executable(imageasy ${SOURCES} ${BACKEND_SOURCES})
+# Add tinyfiledialogs source file
+set(TINYFILEDIALOGS_SOURCE "third_party/tinyfiledialogs/tinyfiledialogs.c")
+
+
+# Add source files
+add_executable(imageasy ${SOURCES} ${BACKEND_SOURCES} ${TINYFILEDIALOGS_SOURCE})
 
 # Link libraries
-target_link_libraries(imageasy PRIVATE FFTW3::fftw3 glad::glad glm::glm imgui::imgui glfw)
+target_link_libraries(imageasy PRIVATE FFTW3::fftw3 glad::glad glm::glm imgui::imgui glfw )
