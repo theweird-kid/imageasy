@@ -1,5 +1,8 @@
+
+#include "./tools/blur_image_tool.hpp"
+#include "./tools/load_image_tool.hpp"
+#include <imgui.h>
 #include "gui.hpp"
-#include "load_image_tool.hpp"
 
 Gui::Gui(GLFWwindow* window) noexcept {
     setupImGui(window);
@@ -10,6 +13,7 @@ Gui::Gui(GLFWwindow* window) noexcept {
 
     // Add tools to the tool canvas
     toolCanvas->addTool(std::make_shared<LoadImageTool>(canvasWidget));
+    toolCanvas->addTool(std::make_shared<BlurImageTool>(canvasWidget));
 }
 
 Gui::~Gui() {
@@ -24,9 +28,13 @@ void Gui::newFrame() {
 
 void Gui::render() {
     // Render the canvas widget
+    ImGui::SetNextWindowSize(ImVec2(1350, 1000), ImGuiCond_Always);
+    ImGui::SetNextWindowPos(ImVec2(550, 10), ImGuiCond_Always);
     canvasWidget->render();
 
     // Render the tool canvas
+    ImGui::SetNextWindowSize(ImVec2(500, 1000), ImGuiCond_Always);
+    ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
     toolCanvas->render();
 
     ImGui::Render();

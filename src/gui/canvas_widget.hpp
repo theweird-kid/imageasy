@@ -12,11 +12,18 @@ public:
     void setImage(GLuint texture, int width, int height);
     void clearImage();
 
+    bool isImageLoaded() const;
+    GLuint getImageTexture() const;
+    int getImageWidth() const;
+    int getImageHeight() const;
+
 private:
     bool imageLoaded;
     GLuint imageTexture;
     int imageWidth;
     int imageHeight;
+
+    float zoomFactor;
 };
 
 #endif // CANVAS_WIDGET_HPP

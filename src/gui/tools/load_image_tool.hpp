@@ -1,8 +1,8 @@
 #ifndef LOAD_IMAGE_TOOL_HPP
 #define LOAD_IMAGE_TOOL_HPP
 
-#include "widget.hpp"
-#include "canvas_widget.hpp"
+#include "../widget.hpp"
+#include "../canvas_widget.hpp"
 #include <memory>
 
 class LoadImageTool : public Widget {

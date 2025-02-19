@@ -3,7 +3,8 @@
 #include <imgui.h>
 
 CanvasWidget::CanvasWidget()
-    : imageLoaded(false), imageTexture(0), imageWidth(0), imageHeight(0)
+    : imageLoaded(false), imageTexture(0),
+    imageWidth(0), imageHeight(0), zoomFactor(1.0f)
 {}
 
 CanvasWidget::~CanvasWidget()
@@ -16,8 +17,23 @@ CanvasWidget::~CanvasWidget()
 void CanvasWidget::render() {
     if (ImGui::Begin("Canvas")) {
         if (imageLoaded) {
-            ImGui::Text("Loaded Image:");
-            ImGui::Image((void*)(intptr_t)imageTexture, ImVec2(imageWidth, imageHeight));
+            // Capture mouse wheel input for zooming
+            ImGuiIO& io = ImGui::GetIO();
+            if (io.MouseWheel != 0.0f) {
+                zoomFactor += io.MouseWheel * 0.1f;
+                if (zoomFactor < 0.1f) zoomFactor = 0.1f; // Clamp zoom factor to a minimum value
+                if (zoomFactor > 10.0f) zoomFactor = 10.0f; // Clamp zoom factor to a maximum value
+            }
+
+            // Calculate centered position
+            ImVec2 windowSize = ImGui::GetContentRegionAvail();
+            ImVec2 imageSize = ImVec2(imageWidth * zoomFactor, imageHeight * zoomFactor);
+            ImVec2 imagePos = ImVec2((windowSize.x - imageSize.x) / 2.0f, (windowSize.y - imageSize.y) / 2.0f);
+
+            // Add padding to avoid clipping
+            ImGui::SetCursorPos(imagePos);
+
+            ImGui::Image((void*)(intptr_t)imageTexture, imageSize);
         } else {
             ImGui::Text("No image loaded.");
         }
@@ -40,4 +56,20 @@ void CanvasWidget::clearImage() {
         imageWidth = 0;
         imageHeight = 0;
     }
+}
+
+bool CanvasWidget::isImageLoaded() const {
+    return imageLoaded;
+}
+
+GLuint CanvasWidget::getImageTexture() const {
+    return imageTexture;
+}
+
+int CanvasWidget::getImageWidth() const {
+    return imageWidth;
+}
+
+int CanvasWidget::getImageHeight() const {
+    return imageHeight;
 }

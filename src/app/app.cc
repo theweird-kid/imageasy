@@ -14,7 +14,7 @@ Application::Application() noexcept {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create window and its OpenGL context
-    m_Window = glfwCreateWindow(800, 600, "Imageasy", NULL, NULL);
+    m_Window = glfwCreateWindow(1920, 1080, "Imageasy", NULL, NULL);
     if (m_Window == nullptr) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -29,6 +29,13 @@ Application::Application() noexcept {
         std::cerr << "Failed to initialize GLAD" << std::endl;
         exit(-1);
     }
+
+    // Query and print OpenGL renderer and vendor
+    const GLubyte* renderer = glGetString(GL_RENDERER);
+    const GLubyte* vendor = glGetString(GL_VENDOR);
+    std::cout << "Renderer: " << renderer << std::endl;
+    std::cout << "Vendor: " << vendor << std::endl;
+
 
     // Set the viewport
     glViewport(0, 0, 800, 600);
