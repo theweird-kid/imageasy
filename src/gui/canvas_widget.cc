@@ -1,5 +1,7 @@
 #include "canvas_widget.hpp"
+#include <GL/gl.h>
 #include <cstdint>
+#include <iostream>
 #include <imgui.h>
 
 CanvasWidget::CanvasWidget()
@@ -41,11 +43,17 @@ void CanvasWidget::render() {
     ImGui::End();
 }
 
-void CanvasWidget::setImage(GLuint texture, int width, int height) {
+void CanvasWidget::setImage(GLuint& texture, int width, int height) {
+    if(imageLoaded) {
+        glDeleteTextures(1, &imageTexture);
+    }
+    std::cout << "Image Changed\n";
     imageTexture = texture;
     imageWidth = width;
     imageHeight = height;
     imageLoaded = true;
+
+    //this->render();
 }
 
 void CanvasWidget::clearImage() {

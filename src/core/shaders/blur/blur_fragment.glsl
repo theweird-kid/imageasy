@@ -7,7 +7,7 @@ in vec2 TexCoord;
 uniform bool horizontal;
 uniform sampler2D image;
 uniform float weight[30];
-uniform float kernelSize;
+uniform int kernelSize;
 
 void main()
 {

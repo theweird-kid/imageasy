@@ -9,7 +9,7 @@ public:
     CanvasWidget();
     ~CanvasWidget();
     void render() override;
-    void setImage(GLuint texture, int width, int height);
+    void setImage(GLuint& texture, int width, int height);
     void clearImage();
 
     bool isImageLoaded() const;
