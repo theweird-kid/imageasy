@@ -9,7 +9,8 @@ public:
     CanvasWidget();
     ~CanvasWidget();
     void render() override;
-    void setImage(GLuint& texture, int width, int height);
+    void setImage(GLuint texture, int width, int height);
+    void setImagealt(GLuint texture, int width, int height);
     void clearImage();
 
     bool isImageLoaded() const;
@@ -22,8 +23,10 @@ private:
     GLuint imageTexture;
     int imageWidth;
     int imageHeight;
-
+    GLuint altTexture;
     float zoomFactor;
+
+    int flag;
 };
 
 #endif // CANVAS_WIDGET_HPP

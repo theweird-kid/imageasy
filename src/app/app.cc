@@ -1,4 +1,5 @@
 #include "app.hpp"
+#include <GL/gl.h>
 #include <GLFW/glfw3.h>
 
 Application::Application() noexcept {
@@ -9,8 +10,8 @@ Application::Application() noexcept {
     }
 
     // Set GLFW context version and profile
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create window and its OpenGL context
@@ -27,6 +28,8 @@ Application::Application() noexcept {
     // Load OpenGL functions using glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD" << std::endl;
+        glfwDestroyWindow(m_Window);
+        glfwTerminate();
         exit(-1);
     }
 
@@ -38,7 +41,7 @@ Application::Application() noexcept {
 
 
     // Set the viewport
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 1920, 1080);
 
     // Setup GUI
     m_Gui = std::make_unique<Gui>(m_Window);
@@ -60,7 +63,7 @@ void Application::run()
         m_Gui->newFrame();
 
         // Render here
-        glClearColor(21.0f / 255.0f, 39.0f / 255.0f, 60.0f / 255.0f, 1.0f); // Set background color to #15273c
+        //glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to #15273c
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Render GUI
@@ -71,6 +74,9 @@ void Application::run()
 
         // Poll for and process events
         glfwPollEvents();
+
+        // Check for OpenGL errors
+
     }
 }
 

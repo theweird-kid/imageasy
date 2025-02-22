@@ -30,6 +30,30 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath)
     glDeleteShader(fragmentShader);
 }
 
+Shader::Shader(const char* computeShaderPath)
+    : program(0)
+{
+    // Load and compile compute shader
+    GLuint computeShader = compileShader(computeShaderPath, GL_COMPUTE_SHADER);
+
+    // Link compute shader
+    program = glCreateProgram();
+    glAttachShader(program, computeShader);
+    glLinkProgram(program);
+
+    // Check for linking errors
+    int success;
+    char infoLog[512];
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(program, 512, NULL, infoLog);
+        std::cerr << "Failed to link compute shader program: " << infoLog << std::endl;
+    }
+
+    // Delete shader
+    glDeleteShader(computeShader);
+}
+
 GLuint Shader::compileShader(const char* shaderPath, GLenum shaderType)
 {
     // Load shader source code

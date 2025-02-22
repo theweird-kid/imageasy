@@ -1,6 +1,7 @@
 #ifndef GUI_HPP
 #define GUI_HPP
 
+#include "tool_canvas.hpp"
 #include <imgui.h>
 #include "../backends/imgui_impl_glfw.h"
 #include "../backends/imgui_impl_opengl3.h"
@@ -9,7 +10,6 @@
 #include <memory>
 #include "widget.hpp"
 #include "canvas_widget.hpp"
-#include "tool_canvas.hpp"
 
 class Gui {
 public:

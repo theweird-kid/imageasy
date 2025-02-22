@@ -7,7 +7,14 @@
 
 class Shader{
 public:
+    // Vertex and Fragment Shader Paths
     Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
+
+    // Compute Shader Path
+    Shader(const char* computeShaderPath);
+    Shader() = default;
+
+    // Destructor
     ~Shader();
 
     void useProgram();

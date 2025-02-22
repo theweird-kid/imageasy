@@ -2,6 +2,7 @@
 build/
 .cache/
 .ropeproject/
+ref.hpp
 
 # Ignore CMake user presets
 CMakeUserPresets.json

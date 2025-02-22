@@ -6,7 +6,7 @@
 
 CanvasWidget::CanvasWidget()
     : imageLoaded(false), imageTexture(0),
-    imageWidth(0), imageHeight(0), zoomFactor(1.0f)
+    imageWidth(0), imageHeight(0), zoomFactor(1.0f), flag(0)
 {}
 
 CanvasWidget::~CanvasWidget()
@@ -35,6 +35,12 @@ void CanvasWidget::render() {
             // Add padding to avoid clipping
             ImGui::SetCursorPos(imagePos);
 
+            if(flag == 1) {
+                imageTexture = altTexture;
+                std::cout << "ImageAlt Rendered\n";
+                flag = 0;
+            }
+
             ImGui::Image((void*)(intptr_t)imageTexture, imageSize);
         } else {
             ImGui::Text("No image loaded.");
@@ -43,10 +49,10 @@ void CanvasWidget::render() {
     ImGui::End();
 }
 
-void CanvasWidget::setImage(GLuint& texture, int width, int height) {
-    if(imageLoaded) {
-        glDeleteTextures(1, &imageTexture);
-    }
+void CanvasWidget::setImage(GLuint texture, int width, int height) {
+    clearImage();
+
+    //glClear(GL_COLOR_BUFFER_BIT);
     std::cout << "Image Changed\n";
     imageTexture = texture;
     imageWidth = width;
@@ -54,6 +60,13 @@ void CanvasWidget::setImage(GLuint& texture, int width, int height) {
     imageLoaded = true;
 
     //this->render();
+}
+
+void CanvasWidget::setImagealt(GLuint texture, int width, int height) {
+    glDeleteTextures(1, &altTexture);
+    altTexture = texture;
+    flag = 1;
+    std::cout << "ImageAlt Changed\n";
 }
 
 void CanvasWidget::clearImage() {
@@ -64,6 +77,8 @@ void CanvasWidget::clearImage() {
         imageWidth = 0;
         imageHeight = 0;
     }
+    glDeleteTextures(1, &altTexture);
+    altTexture = 0;
 }
 
 bool CanvasWidget::isImageLoaded() const {
