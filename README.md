@@ -17,15 +17,15 @@ To build and run `imageasy`, you need the following:
 
 - C++ compiler with C++17 support
 - CMake (version 3.15 or higher)
-- Conan package manager
-- OpenGL development libraries
+- Conan 2.x package manager
+- OpenGL development libraries (OpenGL 4.6)
 
 ### Building
 
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/yourusername/imageasy.git
+   git clone https://github.com/theweird-kid/imageasy.git
    cd imageasy
    ```
 

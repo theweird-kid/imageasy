@@ -1,24 +1,26 @@
 #ifndef TOOL_CANVAS_HPP
 #define TOOL_CANVAS_HPP
 
-#include "../core/blur_effect.hpp"
-#include <vector>
 #include <memory>
-#include "widget.hpp"
-#include "canvas_widget.hpp"
-
+#include <vector>
+#include <string>
+#include "../core/image_effect.hpp"
+#include "../core/pipeline.hpp"
+#include "./tools/load_image_tool.hpp"
 
 class ToolCanvas {
 public:
-    ToolCanvas(std::shared_ptr<CanvasWidget> canvas);
+    ToolCanvas(std::shared_ptr<Pipeline> pipeline);
     void render();
-    void addTool(std::shared_ptr<Widget> tool);
+    void addImageEffect(const std::shared_ptr<ImageEffect>& effect, const std::string& name);
 
 private:
-    std::vector<std::shared_ptr<Widget>> tools;
-    std::shared_ptr<CanvasWidget> canvas;
-    std::shared_ptr<ImageEffect> imageEffect;
-    bool applyBlur; // Flag to indicate whether to apply the blur effect
+    std::shared_ptr<Pipeline> pipeline;
+    std::vector<std::pair<std::shared_ptr<ImageEffect>, std::string>> imageEffects;
+    std::unique_ptr<LoadImageTool> loadImageTool;
+    int selectedEffectIndex;
+    bool applyEffect;
+    float contrastFactor; // Add a member variable for the contrast factor
 };
 
 #endif // TOOL_CANVAS_HPP

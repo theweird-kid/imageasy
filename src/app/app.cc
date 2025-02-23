@@ -75,8 +75,6 @@ void Application::run()
         // Poll for and process events
         glfwPollEvents();
 
-        // Check for OpenGL errors
-
     }
 }
 

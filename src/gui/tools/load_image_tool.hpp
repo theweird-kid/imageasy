@@ -1,20 +1,19 @@
 #ifndef LOAD_IMAGE_TOOL_HPP
 #define LOAD_IMAGE_TOOL_HPP
 
-#include "../widget.hpp"
-#include "../canvas_widget.hpp"
 #include <memory>
+#include "../../core/pipeline.hpp"
 
-class LoadImageTool : public Widget {
+class LoadImageTool {
 public:
-    LoadImageTool(std::shared_ptr<CanvasWidget> canvas);
-    void render() override;
+    LoadImageTool(std::shared_ptr<Pipeline> pipeline);
+    void render();
 
 private:
     void loadImage();
     void removeImage();
 
-    std::shared_ptr<CanvasWidget> canvas;
+    std::shared_ptr<Pipeline> pipeline;
 };
 
 #endif // LOAD_IMAGE_TOOL_HPP

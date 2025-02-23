@@ -1,32 +1,20 @@
 #ifndef CANVAS_WIDGET_HPP
 #define CANVAS_WIDGET_HPP
 
-#include "widget.hpp"
-#include <GL/gl.h>
+#include "../core/pipeline.hpp"
 
-class CanvasWidget : public Widget {
+class CanvasWidget {
 public:
-    CanvasWidget();
+    CanvasWidget(std::shared_ptr<Pipeline> pipeline);
     ~CanvasWidget();
-    void render() override;
-    void setImage(GLuint texture, int width, int height);
-    void setImagealt(GLuint texture, int width, int height);
+
+    void render();
     void clearImage();
 
-    bool isImageLoaded() const;
-    GLuint getImageTexture() const;
-    int getImageWidth() const;
-    int getImageHeight() const;
-
 private:
-    bool imageLoaded;
-    GLuint imageTexture;
-    int imageWidth;
-    int imageHeight;
-    GLuint altTexture;
+    std::shared_ptr<Pipeline> pipeline;
     float zoomFactor;
-
-    int flag;
 };
+
 
 #endif // CANVAS_WIDGET_HPP

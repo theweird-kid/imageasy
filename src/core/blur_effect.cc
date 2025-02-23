@@ -43,39 +43,39 @@ void BlurEffect::apply(GLuint inputTexture, GLuint& outputTexture, int width, in
         std::cout << "Input Texture data before blur:" << std::endl;
         printTextureData(inputTexture, width, height);
 
-    // Create an intermediate texture for the horizontal blur pass
-        GLuint intermediateTexture;
-        GL_CHECK(glGenTextures(1, &intermediateTexture));
-        GL_CHECK(glBindTexture(GL_TEXTURE_2D, intermediateTexture));
-        GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr));
-        GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-        GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    // Intermediate texture for the horizontal blur pass
+    GLuint intermediateTexture;
+    GL_CHECK(glGenTextures(1, &intermediateTexture));
+    GL_CHECK(glBindTexture(GL_TEXTURE_2D, intermediateTexture));
+    GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr));
+    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
-        // Apply the horizontal blur
-        horizontalShader.useProgram();
-        GL_CHECK(glBindImageTexture(0, inputTexture, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F));
-        GL_CHECK(glBindImageTexture(1, intermediateTexture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F));
-        GL_CHECK(glDispatchCompute((GLuint)ceil(width / 16.0), (GLuint)ceil(height / 16.0), 1));
-        GL_CHECK(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
+    // Apply the horizontal blur
+    horizontalShader.useProgram();
+    GL_CHECK(glBindImageTexture(0, inputTexture, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F));
+    GL_CHECK(glBindImageTexture(1, intermediateTexture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F));
+    GL_CHECK(glDispatchCompute((GLuint)ceil(width / 16.0), (GLuint)ceil(height / 16.0), 1));
+    GL_CHECK(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
 
-        // Debug: Print intermediate texture data
-            std::cout << "Intermediate texture data after horizontal blur:" << std::endl;
-            printTextureData(intermediateTexture, width, height);
-
-
-        // Apply the vertical blur
-        verticalShader.useProgram();
-        GL_CHECK(glBindImageTexture(0, intermediateTexture, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F));
-        GL_CHECK(glBindImageTexture(1, outputTexture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F));
-        GL_CHECK(glDispatchCompute((GLuint)ceil(width / 16.0), (GLuint)ceil(height / 16.0), 1));
-        GL_CHECK(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
-
-        // Debug: Print output texture data
-            std::cout << "Output texture data after vertical blur:" << std::endl;
-            printTextureData(outputTexture, width, height);
+    // Debug: Print intermediate texture data
+    std::cout << "Intermediate texture data after horizontal blur:" << std::endl;
+    printTextureData(intermediateTexture, width, height);
 
 
-        // Clean up
-        GL_CHECK(glDeleteTextures(1, &intermediateTexture));
-        glBindTexture(GL_TEXTURE_2D, 0);
+    // Apply the vertical blur
+    verticalShader.useProgram();
+    GL_CHECK(glBindImageTexture(0, intermediateTexture, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F));
+    GL_CHECK(glBindImageTexture(1, outputTexture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F));
+    GL_CHECK(glDispatchCompute((GLuint)ceil(width / 16.0), (GLuint)ceil(height / 16.0), 1));
+    GL_CHECK(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
+
+    // Debug: Print output texture data
+    std::cout << "Output texture data after vertical blur:" << std::endl;
+    printTextureData(outputTexture, width, height);
+
+
+    // Clean up
+    GL_CHECK(glDeleteTextures(1, &intermediateTexture));
+    glBindTexture(GL_TEXTURE_2D, 0);
 }

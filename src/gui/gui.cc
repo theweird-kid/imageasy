@@ -1,43 +1,34 @@
-
 #include "gui.hpp"
-//#include "./tools/blur_image_tool.hpp"
-#include "./tools/load_image_tool.hpp"
 #include <imgui.h>
+#include "../core/blur_effect.hpp"
+#include "../core/contrast_effect.hpp"
+#include "../backends/imgui_impl_glfw.h"
+#include "../backends/imgui_impl_opengl3.h"
 
-
-Gui::Gui(GLFWwindow* window) noexcept {
+Gui::Gui(GLFWwindow* window) {
     setupImGui(window);
 
-    // Create and add widgets
-    canvasWidget = std::make_shared<CanvasWidget>();
-    toolCanvas = std::make_unique<ToolCanvas>(canvasWidget);
+    pipeline = std::make_shared<Pipeline>();
+    canvasWidget = std::make_unique<CanvasWidget>(pipeline);
+    toolCanvas = std::make_unique<ToolCanvas>(pipeline);
 
-    // Add tools to the tool canvas
-    toolCanvas->addTool(std::make_shared<LoadImageTool>(canvasWidget));
-    //toolCanvas->addTool(std::make_shared<BlurImageTool>(canvasWidget));
+    // Add Effects
+    auto blurEffect = std::make_shared<BlurEffect>("src/core/shaders/blur_horizontal.glsl", "src/core/shaders/blur_vertical.glsl");
+    toolCanvas->addImageEffect(blurEffect, "Blur");
+
+    auto contrastEffect = std::make_shared<ContrastEffect>("src/core/shaders/contrast_compute.glsl");
+    toolCanvas->addImageEffect(contrastEffect, "Contrast");
 }
 
 Gui::~Gui() {
-    cleanImGui();
-}
-
-void Gui::newFrame() {
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+    cleanupImGui();
 }
 
 void Gui::render() {
-    // Render the canvas widget
-    //ImGui::SetNextWindowSize(ImVec2(1350, 1000), ImGuiCond_Always);
-    //ImGui::SetNextWindowPos(ImVec2(550, 10), ImGuiCond_Always);
     canvasWidget->render();
-
-    // Render the tool canvas
-    //ImGui::SetNextWindowSize(ImVec2(500, 1000), ImGuiCond_Always);
-    //ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
     toolCanvas->render();
 
+    // Render ImGui
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -52,8 +43,14 @@ void Gui::setupImGui(GLFWwindow* window) {
     ImGui_ImplOpenGL3_Init("#version 460");
 }
 
-void Gui::cleanImGui() {
+void Gui::cleanupImGui() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+}
+
+void Gui::newFrame() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 }
