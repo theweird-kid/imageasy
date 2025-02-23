@@ -11,6 +11,7 @@ public:
     ~Pipeline();
 
     void setImage(GLuint texture, int width, int height);
+    void resetImage();
     void applyEffect(const std::function<void(GLuint, GLuint, int, int)>& effect);
     void clearImage();
 

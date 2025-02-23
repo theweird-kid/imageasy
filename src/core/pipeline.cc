@@ -39,7 +39,7 @@ void Pipeline::applyEffect(const std::function<void(GLuint, GLuint, int, int)>& 
     if (!imageLoaded) return;
 
     // Apply the effect to the processed image
-    effect(originalImageTexture, processedImageTexture, imageWidth, imageHeight);
+    effect(processedImageTexture, processedImageTexture, imageWidth, imageHeight);
 }
 
 void Pipeline::clearImage() {
@@ -53,6 +53,16 @@ void Pipeline::clearImage() {
         imageHeight = 0;
     }
 }
+
+void Pipeline::resetImage() {
+    if (!imageLoaded) return;
+
+    // Copy the original image to the processed image
+    glCopyImageSubData(originalImageTexture, GL_TEXTURE_2D, 0, 0, 0, 0,
+                       processedImageTexture, GL_TEXTURE_2D, 0, 0, 0, 0,
+                       imageWidth, imageHeight, 1);
+}
+
 
 bool Pipeline::isImageLoaded() const {
     return imageLoaded;

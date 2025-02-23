@@ -6,11 +6,13 @@
 #include <GLFW/glfw3.h>
 
 #include <imgui.h>
+#include <memory>
 #include <vector>
 #include "../backends/imgui_impl_glfw.h"
 #include "../backends/imgui_impl_opengl3.h"
 
 #include "../gui/gui.hpp"
+#include "../core/shaders.hpp"
 
 class Application {
 public:
@@ -24,6 +26,9 @@ public:
     void setWindow(GLFWwindow* window);
     GLFWwindow* getWindow();
 
+    void GenerateBgShader();
+    void renderBg();
+
 private:
     // Resize window callback
     void framebufferSizeCallback(int width, int height)
@@ -36,6 +41,9 @@ private:
 private:
     GLFWwindow* m_Window;
     std::unique_ptr<Gui> m_Gui;
+    std::unique_ptr<Shader> m_backgroundShader;
+    GLuint VAO, VBO;
+    GLuint backgroundTexture;
 };
 
 #endif // !APPLICATION_HPP

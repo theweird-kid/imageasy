@@ -14,6 +14,15 @@ void ToolCanvas::render()
     {
         loadImageTool->render();
 
+        // Reset Image Button
+        if (ImGui::Button("Reset Image"))
+        {
+            if (pipeline->isImageLoaded())
+            {
+                pipeline->resetImage();
+            }
+        }
+
         // Render buttons for each effect
         for (int i = 0; i < imageEffects.size(); ++i)
         {
